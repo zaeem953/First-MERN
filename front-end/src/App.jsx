@@ -3,6 +3,7 @@ import Nav from './components/Nav'
 import { BrowserRouter, Route,  Routes } from 'react-router-dom'
 import SignUp from './components/SignUp'
 import "../src/App.css"
+import PrivateComponenet from './components/PrivateComponenet'
 
 
 function App() {
@@ -13,11 +14,14 @@ function App() {
         <BrowserRouter>
           <Nav/>
           <Routes>
-            <Route path="/" element={<h1>From Products components</h1>}/>
-            <Route path="/add" element={<h1>From Add Products components</h1>}/>
-            <Route path="/update" element={<h1>From Update Products components</h1>}/>
-            <Route path="/logout" element={<h1>From Logout components</h1>}/>
-            <Route path="/profile" element={<h1>From Profile components</h1>}/>
+
+            <Route element={<PrivateComponenet/>}>
+              <Route path="/" element={<h1>From Products components</h1>}/>
+              <Route path="/add" element={<h1>From Add Products components</h1>}/>
+              <Route path="/update" element={<h1>From Update Products components</h1>}/>
+              <Route path="/logout" element={<h1>From Logout components</h1>}/>
+              <Route path="/profile" element={<h1>From Profile components</h1>}/>
+            </Route>
             <Route path="/signup" element={<SignUp/>}/>
           </Routes>
           <Footer/>

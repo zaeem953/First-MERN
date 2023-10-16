@@ -1,12 +1,20 @@
-import React, { useState } from 'react'
-import {useNavigate} from "react-router-dom"
+import React, { useState,useEffect } from 'react'
+import {json, useNavigate} from "react-router-dom"
 
 const SignUp = () => {
   const [name, setName] = useState("")
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
   const navigate=useNavigate()
+  // do nor show sign up page if it is akready logged in
+  useEffect(()=>{
+    const auth=localStorage.getItem("user");
+    if(auth){
+      navigate("/")
+    }
+  })
 
+  // ---------------------------API Call from node and DB---------------------
   const collectData = async () => {
     console.log(name, password, email);
     let result = await fetch("http://localhost:3000/register", {
@@ -18,10 +26,8 @@ const SignUp = () => {
     });
     result = await result.json();
     console.log(result);
-
-    if(result){
-        navigate("/")
-    }
+    localStorage.setItem("user",JSON.stringify(result));
+    navigate("/");
   }
 
   return (
