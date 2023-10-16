@@ -1,6 +1,8 @@
-import Footer from './Footer'
-import Nav from './Nav'
+import Footer from './components/Footer'
+import Nav from './components/Nav'
 import { BrowserRouter, Route,  Routes } from 'react-router-dom'
+import SignUp from './components/SignUp'
+import "../src/App.css"
 
 
 function App() {
@@ -16,6 +18,7 @@ function App() {
             <Route path="/update" element={<h1>From Update Products components</h1>}/>
             <Route path="/logout" element={<h1>From Logout components</h1>}/>
             <Route path="/profile" element={<h1>From Profile components</h1>}/>
+            <Route path="/signup" element={<SignUp/>}/>
           </Routes>
           <Footer/>
         </BrowserRouter>

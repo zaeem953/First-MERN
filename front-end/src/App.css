@@ -24,3 +24,21 @@
   background-color: skyblue;
 }
 
+.signup{
+  margin-left: 30%;
+}
+
+.inputBox{
+  display: block;
+  margin: 25px;
+  padding: 7px;
+  width: 300px;
+  border: 1px solid skyblue;
+}
+
+.signup-btn{
+  margin: 25px;
+  padding: 7px;
+  width: 150px;
+  background-color: skyblue;
+}
