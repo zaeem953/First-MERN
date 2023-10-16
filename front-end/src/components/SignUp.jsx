@@ -12,7 +12,7 @@ const SignUp = () => {
     if(auth){
       navigate("/")
     }
-  })
+  },[])
 
   // ---------------------------API Call from node and DB---------------------
   const collectData = async () => {

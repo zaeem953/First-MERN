@@ -5,6 +5,8 @@ function Nav() {
   // check if users data is in local storage
   const auth=localStorage.getItem("user");
   const navigate=useNavigate();
+
+  // ----------------------LOGOUT FUNCTION----------------
   const logout=()=>{
     localStorage.clear();
     navigate("/signup");
@@ -18,14 +20,23 @@ function Nav() {
             <li><Link to="/update">Update Products</Link></li>
             <li><Link to="/profile">Profile</Link></li>
             
+            {
+              auth ? <li><Link to="/signup" onClick={logout}>Logout</Link></li> 
+              :<> 
+              <li><Link to="/signup">Sign Up</Link></li>
+               <li><Link to="/login">Login</Link></li>
+               </>
+            }
             
-            <li>{auth ? <Link to="/signup" onClick={logout}>Logout</Link> :
-            <Link to="/signup">Sign Up</Link>}</li>
         </ul>
     </div>
   )
 }
 
+
+// <li>{auth ? <Link to="/signup" onClick={logout}>Logout</Link> :
+// <Link to="/signup">Sign Up</Link>}</li>
+// <li><Link to="/login">Login</Link></li>
                 
                 
                 
