@@ -4,7 +4,12 @@ import {Link, useNavigate} from "react-router-dom"
 function Nav() {
   // check if users data is in local storage
   const auth=localStorage.getItem("user");
-  // Show logout if user have signup and Show signup if user is not loggedin on line 17
+  const navigate=useNavigate();
+  const logout=()=>{
+    localStorage.clear();
+    navigate("/signup");
+  }
+  
   return (
     <div>
         <ul className='nav-ul'>
@@ -14,7 +19,7 @@ function Nav() {
             <li><Link to="/profile">Profile</Link></li>
             
             
-            <li>{auth ? <Link to="/logout">Logout</Link> :
+            <li>{auth ? <Link to="/signup" onClick={logout}>Logout</Link> :
             <Link to="/signup">Sign Up</Link>}</li>
         </ul>
     </div>
