@@ -47,3 +47,7 @@
   width: 150px;
   background-color: skyblue;
 }
+
+.nav-right{
+  text-align: right;
+}
