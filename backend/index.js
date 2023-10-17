@@ -42,10 +42,23 @@ app.post("/login",async (req,resp)=>{
 //---------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------PRODUCT ROUTES_------------------------------------------------------------
 
+
+//---------------------------------------------------ADD PRODUCT------------------------------------------------
 app.post("/add-product", async (req,resp) =>{
     let product = new Product(req.body);
     let result = await product.save();
     resp.send(result);
+})
+
+//---------------------------------------------------GET ALL PRODUCT LIST---------------------------------------
+
+app.get("/products", async (req,res)=>{
+    let products = await Product.find();
+    if(products.length>0){
+        res.send(products)
+    }else{
+        res.send({result : "No products found"})
+    }
 })
 
 app.get('/', (req, res) => res.send('Hello World!'))
