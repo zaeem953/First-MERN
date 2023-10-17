@@ -90,6 +90,20 @@ app.put("/products/:id", async (req, res)=>{
     res.send(result);
 })
 
+//-----------------------------------SEARCH------------------------------------------------------------
+
+
+app.get("/search/:key", async (req, res)=>{
+    const result= await Product.find({
+        "$or":[
+            {name: {$regex:req.params.key}},
+            {company: {$regex:req.params.key}},
+            {category: {$regex:req.params.key}}
+        ]
+    })
+    res.send(result);
+})
+
 
 app.get('/', (req, res) => res.send('Hello World!'))
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
