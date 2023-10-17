@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import {Link} from "react-router-dom"
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
-
+//-----------------------------------------------------GET ALL PRODUCTS-----------------------------
     useEffect(() => {
         getProducts();
     }, [])
@@ -12,8 +13,16 @@ const ProductList = () => {
         result = await result.json();
         setProducts(result);
     }
-
-    console.log("products", products)
+//----------------------------------------DELETE PRODUCTS-----------------------------------------------
+    const deleteProduct=async (id)=>{
+        let result = await fetch(`http://localhost:3000/products/${id}`,{
+            method:"Delete",
+        })
+        result = await result.json();
+        if(result){
+            getProducts();
+        }
+    }
     return (
         <div className='product-list'>
             <h3>ProductList</h3>
@@ -23,14 +32,19 @@ const ProductList = () => {
                 <li>Name</li>
                 <li>Price</li>
                 <li>Company</li>
+                <li>Operations</li>
             </ul>
             {
                 products.map((item,index) =>
-                    <ul>
+                    <ul key={item._id}>
                         <li>{index+1}</li>
                         <li>{item.name}</li>
                         <li>$ {item.price}</li>
                         <li>{item.company}</li>
+                        <li>
+                            <button onClick={()=>deleteProduct(item._id)}>Delete</button>
+                            <Link
+                        </li>
                     </ul>
                 )
             }

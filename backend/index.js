@@ -61,5 +61,12 @@ app.get("/products", async (req,res)=>{
     }
 })
 
+//-----------------------------------------------DELETE PRODUCT-----------------------------------------------
+
+app.delete("/products/:id", async (req,res)=>{
+    const result= await Product.deleteOne({_id: req.params.id});
+    res.send(result);
+})
+
 app.get('/', (req, res) => res.send('Hello World!'))
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
