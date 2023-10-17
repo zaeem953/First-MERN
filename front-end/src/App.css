@@ -24,7 +24,7 @@
   background-color: skyblue;
 }
 
-.signup{
+.signup,.product{
   margin-left: 30%;
 }
 
@@ -50,4 +50,12 @@
 
 .nav-right{
   text-align: right;
+}
+
+.invalid-input{
+  color: red;
+  margin-top: -20px;
+  margin-left: 25px;
+  display: block;
+  font-size: 12px;
 }
