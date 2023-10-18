@@ -81,7 +81,7 @@ app.get("/products/:id", async (req, res)=>{
     }
 })
 
-
+//-------------------------------------Update-------------------------------------------------------
 app.put("/products/:id", async (req, res)=>{
     const result= await Product.updateOne(
         {_id: req.params.id},
