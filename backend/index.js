@@ -6,6 +6,7 @@ const products = require("./db/Product");
 const Product = require('./db/Product');
 const Jwt = require("jsonwebtoken");
 const jwtKey = "e-com";
+const upload=require("./middleware/upload")
 
 const app = express()
 const port = 3000
@@ -13,6 +14,8 @@ const port = 3000
 //-----------------------MIDDLEWARES-----------------------
 app.use(express.json());
 app.use(cors());
+app.use(express.static('uploads'));
+
 
 //--------------------------------------------AUTH LOGIN AND REGISTER  START---------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -22,7 +25,7 @@ app.post("/register", async (req, resp) => {
     result = result.toObject();
     delete result.password;
     //----------------------------------------------JWT TOKEN FOR REGISTER------------------------------------------------------------------------
-    Jwt.sign({ result }, jwtKey, { expiresIn: "2h" }, (err, token) => {
+    Jwt.sign({ result }, jwtKey, { expiresIn: "24h" }, (err, token) => {
         if (err) {
             resp.send({ result: "Something went wrong" })
         }
@@ -59,11 +62,31 @@ app.post("/login", async (req, resp) => {
 
 
 //---------------------------------------------------ADD PRODUCT------------------------------------------------
-app.post("/add-product",verifyToken, async (req, resp) => {
-    let product = new Product(req.body);
-    let result = await product.save();
-    resp.send(result);
-})
+app.post('/add-product', verifyToken, upload.single('avatar'), async (req, res) => {
+    // Check if a file was uploaded
+    if (!req.file) {
+        return res.status(400).send({ result: 'No file uploaded' });
+    }
+
+    // Create a new product using the Product model
+    const product = new Product({
+        name: req.body.name,
+        price: req.body.price,
+        category: req.body.category,
+        userId: req.body.userId,
+        company: req.body.company,
+        avatar: req.file.filename,
+    });
+
+    try {
+        // Save the product to the database
+        const result = await product.save();
+        res.send(result);
+    } catch (error) {
+        res.status(500).send({ result: 'Error saving product' });
+    }
+});
+
 
 //---------------------------------------------------GET ALL PRODUCT LIST---------------------------------------
 
@@ -87,23 +110,50 @@ app.delete("/products/:id",verifyToken, async (req, res) => {
 
 
 //-------------------------------------------GET BY ID-------------------------------------------------
-app.get("/products/:id",verifyToken, async (req, res) => {
+// app.get("/products/:id",verifyToken, async (req, res) => {
+//     const result = await Product.findOne({ _id: req.params.id });
+//     if (result) {
+//         res.send(result)
+//     } else {
+//         res.send({ result: "No products found" })
+//     }
+// })
+
+app.get("/products/:id", verifyToken, async (req, res) => {
     const result = await Product.findOne({ _id: req.params.id });
     if (result) {
-        res.send(result)
+        res.send(result);
     } else {
-        res.send({ result: "No products found" })
+        res.send({ result: "No products found" });
     }
-})
+});
+
 
 //-------------------------------------Update-------------------------------------------------------
-app.put("/products/:id",verifyToken, async (req, res) => {
-    const result = await Product.updateOne(
-        { _id: req.params.id },
-        { $set: req.body }
-    )
-    res.send(result);
-})
+app.put("/products/:id", verifyToken, upload.single("avatar"), async (req, res) => {
+    const productId = req.params.id;
+    
+    // Handle file upload
+    if (!req.file) {
+        return res.status(400).send({ result: 'No file uploaded' });
+    }
+    
+    const updateData = {
+        name: req.body.name,
+        price: req.body.price,
+        category: req.body.category,
+        company: req.body.company,
+        avatar: req.file.filename, // Update the avatar filename
+    };
+
+    try {
+        const result = await Product.findByIdAndUpdate(productId, updateData, { new: true });
+        res.send(result);
+    } catch (error) {
+        res.status(500).send({ result: 'Error updating product' });
+    }
+});
+
 
 //-----------------------------------SEARCH------------------------------------------------------------
 
